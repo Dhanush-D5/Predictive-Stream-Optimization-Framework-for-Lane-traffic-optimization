@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Traffic Congestion Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f8;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 25px 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: grid;
+            grid-gap: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .prediction, .accuracy {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Traffic Congestion Predictor</h1>
+        <form method="POST">
+            <label>Lane ID:</label>
+            <select name="lane_id" required>
+                {% for option in dropdown_values['Lane ID'] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Vehicle Count:</label>
+            <input type="number" name="vehicle_count" min="0" required>
+
+            <label>Avg Speed (km/h):</label>
+            <input type="number" name="avg_speed" step="0.1" min="0" required>
+
+            <label>Load (%):</label>
+            <input type="number" name="load" step="0.1" min="0" required>
+
+            <label>Incident:</label>
+            <select name="incident" required>
+                {% for option in dropdown_values['Incident'] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Weather:</label>
+            <select name="weather" required>
+                {% for option in dropdown_values['Weather'] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Signal Status:</label>
+            <select name="signal_status" required>
+                {% for option in dropdown_values['Signal Status'] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Priority Flow:</label>
+            <select name="priority_flow" required>
+                {% for option in dropdown_values['Priority Flow'] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction %}
+            <div class="prediction">
+                <h2>Predicted Congestion Level:</h2>
+                <p>{{ prediction }}</p>
+            </div>
+        {% endif %}
+
+        <div class="accuracy">
+            <p>Model Cross-Validation Accuracy: <strong>{{ accuracy }}%</strong></p>
+        </div>
+    </div>
+</body>
+</html>
